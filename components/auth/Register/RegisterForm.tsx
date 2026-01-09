@@ -66,10 +66,10 @@ export default function RegisterForm() {
             <div className={styles.logoWrapper}>
               <div className={styles.logo}>
                 <svg width="31" height="30" className="icon-leleka">
-                  <use href="/logo-icon.svg#icon-icon-leleka"></use>
+                  <use href="/icon-sprite.svg#icon-logo"></use>
                 </svg>
                 <svg width="61" height="13" className="text-leleka">
-                  <use href="/logo-icon.svg#icon-text-leleka"></use>
+                  <use href="/icon-sprite.svg#icon-leleka"></use>
                 </svg>
               </div>
             </div>
