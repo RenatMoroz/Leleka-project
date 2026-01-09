@@ -7,7 +7,7 @@ const Header = () => (<header className={css.header}>
     <Link href="/" aria-label="Home">
        
         <svg width="106" height="30" class="header-logo">
-          <use href=""></use>
+          <use href="/publ"></use>
         </svg>
          Лелека
     </Link>
