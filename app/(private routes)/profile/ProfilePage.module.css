@@ -1,0 +1,50 @@
+.page {
+  min-height: 100vh;
+  background-color: #fafafa;
+  padding: 1rem;
+}
+
+.container {
+  max-width: 420px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Error Message */
+.errorMessage {
+  padding: 2rem;
+  text-align: center;
+}
+
+.errorMessage p {
+  font-size: 0.875rem;
+  color: #e91e63;
+  margin: 0;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .page {
+    padding: 2rem;
+  }
+
+  .container {
+    max-width: 600px;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .page {
+    padding: 3rem 2rem;
+  }
+
+  .container {
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
