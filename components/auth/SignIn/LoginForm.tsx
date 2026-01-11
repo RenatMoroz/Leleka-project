@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './LoginForm.module.css';
 import toast from 'react-hot-toast';
+import { useAuthStore } from '@/lib/store/authStore';
 
 interface FormValues {
   email: string;
@@ -15,11 +16,12 @@ interface FormValues {
 const validationSchema = Yup.object({
   email: Yup.string().email('Некоректний email').required("Обов'язкове поле"),
   password: Yup.string()
-    .min(6, 'Мінімум 6 символів')
+    .min(8, 'Мінімум 8 символів')
     .required("Обов'язкове поле"),
 });
 
 export default function LoginForm() {
+  const setUser = useAuthStore((state) => state.setUser);
   const router = useRouter();
 
   const handleSubmit = async (
@@ -39,6 +41,11 @@ export default function LoginForm() {
 
       if (res.ok) {
         toast.success('Вхід успішний! Вітаємо 👋');
+        // console.log(`Data: `, data);
+        const name = data.name;
+        const email = data.email;
+        const avatarURL = data.avatarURL;
+        setUser({ name, email, avatarURL });
         router.push('/');
       } else {
         toast.error(data.error || 'Невірний email або пароль');
@@ -58,10 +65,10 @@ export default function LoginForm() {
             <div className={styles.logoWrapper}>
               <div className={styles.logo}>
                 <svg width="31" height="30" className="icon-leleka">
-                  <use href="/logo-icon.svg#icon-icon-leleka"></use>
+                  <use href="/icon-sprite.svg#icon-logo"></use>
                 </svg>
                 <svg width="61" height="13" className="text-leleka">
-                  <use href="/logo-icon.svg#icon-text-leleka"></use>
+                  <use href="/icon-sprite.svg#icon-leleka"></use>
                 </svg>
               </div>
             </div>
@@ -75,7 +82,7 @@ export default function LoginForm() {
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
             >
-              {({ isSubmitting }) => (
+              {({ isSubmitting, errors, touched }) => (
                 <Form className={styles.form}>
                   <label className={styles.label}>
                     Пошта*
@@ -83,7 +90,9 @@ export default function LoginForm() {
                       name="email"
                       type="email"
                       placeholder="hello@leleka.com"
-                      className={styles.input}
+                      className={`${styles.input} ${
+                        errors.email && touched.email ? styles.inputError : ''
+                      }`}
                     />
                     <ErrorMessage
                       name="email"
@@ -91,14 +100,17 @@ export default function LoginForm() {
                       className={styles.error}
                     />
                   </label>
-
                   <label className={styles.label}>
                     Пароль*
                     <Field
                       name="password"
                       type="password"
                       placeholder="********"
-                      className={styles.input}
+                      className={`${styles.input} ${
+                        errors.password && touched.password
+                          ? styles.inputError
+                          : ''
+                      }`}
                     />
                     <ErrorMessage
                       name="password"
@@ -106,19 +118,16 @@ export default function LoginForm() {
                       className={styles.error}
                     />
                   </label>
-
                   <button
                     type="submit"
                     className={styles.button}
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? 'Завантаження...' : 'Увійти'}
-                    
                   </button>
-
                   <p className={styles.loginPrompt}>
                     Немає аккаунту?{' '}
-                    <Link href="/sign-up" className={styles.loginLink}>
+                    <Link href="/auth/register" className={styles.loginLink}>
                       Зареєструватися
                     </Link>
                   </p>
@@ -127,8 +136,7 @@ export default function LoginForm() {
             </Formik>
           </div>
         </div>
-          <div className={styles.background}>
-          </div>
+        <div className={styles.background}></div>
       </div>
     </section>
   );
