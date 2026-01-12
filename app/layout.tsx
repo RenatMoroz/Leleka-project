@@ -39,8 +39,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <TanStackProvider>
         {children}
         <Toaster position="top-right" />
+        </TanStackProvider>
       </body>
     </html>
   );
