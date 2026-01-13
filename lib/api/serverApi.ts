@@ -1,11 +1,11 @@
 import { cookies } from "next/headers";
-import { nextServer } from "./api";
+import { NextServer } from "./api";
 import type { User } from "@/types/user";
 
 export async function getCurrentUserServer(): Promise<User> {
   const cookieStore = await cookies();
 
-  const res = await nextServer.get<User>("/users/current", {
+  const res = await NextServer.get<User>("/users/current", {
     headers: {
       Cookie: cookieStore.toString(),
     },

@@ -56,10 +56,10 @@ export default function ProfileAvatar({ user }: ProfileAvatarProps) {
         />
       </div>
 
-      <h2 className={styles.name}>Ганна</h2>
-      {/* {user.name} */}
-      <p className={styles.email}>hanna@gmail.com</p>
-      {/* {user.email} */}
+      <h2 className={styles.name}>{user.name}</h2>
+
+      <p className={styles.email}>{user.email}</p>
+
       <button
         type="button"
         onClick={handleButtonClick}

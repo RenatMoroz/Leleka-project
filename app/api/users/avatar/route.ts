@@ -1,9 +1,9 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { api } from "../../api";
+import { lehlekaApi } from "../../api";
 import { cookies } from "next/headers";
-import { logErrorResponse } from "../../_utils/utils.js";
+import { logErrorResponse } from "../../_utils/utils";
 import { isAxiosError } from "axios";
 
 export async function PATCH(request: Request) {
@@ -11,7 +11,7 @@ export async function PATCH(request: Request) {
     const cookieStore = await cookies();
     const formData = await request.formData();
 
-    const res = await api.patch("/api/users/avatar", formData, {
+    const res = await lehlekaApi.patch("/users/avatar", formData, {
       headers: {
         Cookie: cookieStore.toString(),
         "Content-Type": "multipart/form-data",
