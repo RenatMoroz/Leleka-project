@@ -1,38 +1,6 @@
-// import { NextRequest, NextResponse } from "next/server";
-// import { NextServer } from "@/lib/api/api";
-// import { isAxiosError } from "axios";
-
-// export async function POST(req: NextRequest) {
-//   try {
-//     const body = await req.json();
-//     const apiRes = await NextServer.post("/auth/register", body);
-
-//     return NextResponse.json(apiRes.data, { status: apiRes.status });
-//   } catch (error: unknown) {
-//     console.error(error);
-
-//     if (isAxiosError(error)) {
-//       return NextResponse.json(
-//         { error: error.response?.data?.message || error.message },
-//         { status: error.response?.status || 500 }
-//       );
-//     }
-
-//     return NextResponse.json(
-//       {
-//         error: error instanceof Error ? error.message : "Internal Server Error",
-//       },
-//       { status: 500 }
-//     );
-//   }
-// }
-
-import { NextRequest, NextResponse } from "next/server";
-import { lehlekaApi } from "../../api";
-import { cookies } from "next/headers";
-import { parse } from "cookie";
-import { isAxiosError } from "axios";
-import { logErrorResponse } from "../../_utils/utils";
+import { NextRequest, NextResponse } from 'next/server';
+import { NextServer } from '@/lib/api/api';
+import { isAxiosError } from 'axios';
 
 export async function POST(req: NextRequest) {
   try {
@@ -64,31 +32,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   } catch (error) {
     if (isAxiosError(error)) {
-      const status = error.response?.status;
-
-      if (status === 409) {
-        return NextResponse.json(
-          { error: "Користувач вже існує, cпробуйте щось унікальніше" },
-          { status: 409 }
-        );
-      }
-
-      if (status === 422 || status === 400) {
-        return NextResponse.json(
-          { error: "Невалідні дані, перевірте введену пошту або ж ім`я" },
-          { status }
-        );
-      }
-
-      logErrorResponse(error.response?.data);
       return NextResponse.json(
-        { error: error.message, response: error.response?.data },
-        { status: error.status }
+        { error: error.response?.data?.message || error.message },
+        { status: error.response?.status || 500 }
       );
     }
-    logErrorResponse({ message: (error as Error).message });
+
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      {
+        error: error instanceof Error ? error.message : 'Internal Server Error',
+      },
       { status: 500 }
     );
   }
