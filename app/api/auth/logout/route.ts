@@ -1,33 +1,35 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { NextServer } from '@/lib/api/api';
+import { NextResponse } from 'next/server';
+import { lehlekaApi } from '../../api';
+import { cookies } from 'next/headers';
 import { isAxiosError } from 'axios';
+import { logErrorResponse } from '../../_utils/utils';
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
-    const apiRes = await NextServer.post('/auth/logout');
+    const cookieStore = await cookies();
 
-    const response = new NextResponse(null, { status: 204 });
+    const accessToken = cookieStore.get('accessToken')?.value;
+    const refreshToken = cookieStore.get('refreshToken')?.value;
 
-    response.cookies.delete('accessToken');
-    response.cookies.delete('refreshToken');
-    response.cookies.delete('token');
+    await lehlekaApi.post('auth/logout', null, {
+      headers: {
+        Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken}`,
+      },
+    });
 
-    return response;
-  } catch (error: unknown) {
-    console.error('Logout error:', error);
+    cookieStore.delete('accessToken');
+    cookieStore.delete('refreshToken');
 
+    return NextResponse.json({ message: 'Logged out successfully' }, { status: 200 });
+  } catch (error) {
     if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
       return NextResponse.json(
-        { error: error.response?.data?.message || error.message },
-        { status: error.response?.status || 500 }
+        { error: error.message, response: error.response?.data },
+        { status: error.status }
       );
     }
-
-    return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Помилка виходу',
-      },
-      { status: 500 }
-    );
+    logErrorResponse({ message: (error as Error).message });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
