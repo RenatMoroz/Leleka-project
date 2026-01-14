@@ -1,9 +1,9 @@
 import { createPortal } from "react-dom";
 import css from "./HeaderModalNavigation.module.css";
 import { useEffect } from "react";
-import Link from "next/link";
 import { useAuthStore } from "@/lib/store/authStore";
 import UserBar from "../UserBar/UserBar";
+import { ModalLink } from "../ModalLink/ModalLink";
 
 interface HeaderModalNavigationProps {
   onClose: () => void;
@@ -55,124 +55,142 @@ export default function HeaderModalNavigation({
           </button>
 
           <div className={css.logo_container}>
-            <Link href="/" aria-label="Home" className={css.logo_link}>
+            <ModalLink
+              href="/"
+              aria-label="Home"
+              className={css.logo_link}
+              onNavigate={onClose}
+            >
               <svg width="29.6" height="29.6" className="header-logo">
                 <use href="/icon-sprite.svg#icon-logo"></use>
               </svg>
               <svg width="61" height="13" className="header-logo">
                 <use href="/icon-sprite.svg#icon-leleka"></use>
               </svg>
-            </Link>
+            </ModalLink>
           </div>
 
           <ul className={css.navigation_list}>
             <li className={css.navigation_list_item}>
-              <Link href="/" aria-label="My day" className={css.menu_link}>
+              <ModalLink
+                href="/"
+                aria-label="My day"
+                className={css.menu_link}
+                onNavigate={onClose}
+              >
                 <svg width="24" height="24" className={css.list_item_svg}>
                   <use href="/icon-sprite.svg#icon-today"></use>
                 </svg>
                 Мій день
-              </Link>
+              </ModalLink>
             </li>
             <li className={css.navigation_list_item}>
               {/* Todo Bellow need complex solution */}
               {isAuthenticated ? (
-                <Link
+                <ModalLink
                   href="/journey/1"
                   aria-label="Jorney"
                   className={css.menu_link}
+                  onNavigate={onClose}
                 >
                   <svg width="24" height="24" className={css.list_item_svg}>
                     <use href="/icon-sprite.svg#icon-conversion-path"></use>
                   </svg>
                   Подорож
-                </Link>
+                </ModalLink>
               ) : (
-                <Link
+                <ModalLink
                   href="/auth/register"
                   aria-label="Register"
                   className={css.menu_link}
+                  onNavigate={onClose}
                 >
                   <svg width="24" height="24" className={css.list_item_svg}>
                     <use href="/icon-sprite.svg#icon-conversion-path"></use>
                   </svg>
                   Подорож
-                </Link>
+                </ModalLink>
               )}
             </li>
             <li className={css.navigation_list_item}>
               {isAuthenticated ? (
-                <Link
+                <ModalLink
                   href="/diary"
                   aria-label="Diary"
                   className={css.menu_link}
+                  onNavigate={onClose}
                 >
                   <svg width="24" height="24" className={css.list_item_svg}>
                     <use href="/icon-sprite.svg#icon-book"></use>
                   </svg>
                   Щоденник
-                </Link>
+                </ModalLink>
               ) : (
-                <Link
+                <ModalLink
                   href="/auth/register"
                   aria-label="Register"
                   className={css.menu_link}
+                  onNavigate={onClose}
                 >
                   <svg width="24" height="24" className={css.list_item_svg}>
                     <use href="/icon-sprite.svg#icon-book"></use>
                   </svg>
                   Щоденник
-                </Link>
+                </ModalLink>
               )}
             </li>
             <li className={css.navigation_list_item}>
               {isAuthenticated ? (
-                <Link
+                <ModalLink
                   href="/profile"
                   aria-label="Home"
                   className={css.menu_link}
+                  onNavigate={onClose}
                 >
                   <svg width="24" height="24" className={css.list_item_svg}>
                     <use href="/icon-sprite.svg#icon-account-circle"></use>
                   </svg>
                   Профіль
-                </Link>
+                </ModalLink>
               ) : (
-                <Link
+                <ModalLink
                   href="/auth/register"
                   aria-label="Register"
                   className={css.menu_link}
+                  onNavigate={onClose}
                 >
                   <svg width="24" height="24" className={css.list_item_svg}>
                     <use href="/icon-sprite.svg#icon-account-circle"></use>
                   </svg>
                   Профіль
-                </Link>
+                </ModalLink>
               )}
             </li>
           </ul>
         </div>
         <div className={css.bottom_modal_container}>
           {isAuthenticated ? (
-            <UserBar user={user!} />
+            <UserBar user={user!} onCloseMenu={onClose} />
           ) : (
-              <div className={css.btns_container}>
-                <Link
-                  className={css.register_btn}
-                  href="/auth/register"
-                  aria-label="Register"
-                >
-                  Зареєструватись
-                </Link>
-                <Link
-                  className={css.login_btn}
-                  href="/auth/login"
-                  aria-label="Login"
-                >
-                  Увійти
-                </Link>
-              </div>
-          ) }
+            <div className={css.btns_container}>
+              <ModalLink
+                className={css.register_btn}
+                href="/auth/register"
+                aria-label="Register"
+                onNavigate={onClose}
+              >
+                Зареєструватись
+              </ModalLink>
+              <ModalLink
+                className={css.login_btn}
+                href="/auth/login"
+                aria-label="Login"
+                onNavigate={onClose}
+              >
+                Увійти
+              </ModalLink>
+            </div>
+          )}
         </div>
       </div>
     </div>,

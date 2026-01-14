@@ -9,9 +9,10 @@ import { useRouter } from "next/navigation";
 
 interface UserBarProps {
   user: User;
+  onCloseMenu: () => void;
 }
 
-export default function UserBar({ user }: UserBarProps) {
+export default function UserBar({ user, onCloseMenu }: UserBarProps) {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const clearIsAuthenticated = useAuthStore(
     (state) => state.clearIsAuthenticated
@@ -21,6 +22,7 @@ export default function UserBar({ user }: UserBarProps) {
   const handleLogout = async () => {
     await logout();
     clearIsAuthenticated();
+    onCloseMenu();
     router.push("/sign-in");
   };
 
