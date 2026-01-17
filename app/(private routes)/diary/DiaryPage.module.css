@@ -1,13 +1,17 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 32px;
+  max-width: 375px;
+  margin: 0 auto;
 }
 
 .content {
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .listCol,
@@ -15,7 +19,15 @@
   min-width: 0;
 }
 
+@media (min-width: 768px) {
+  .page {
+    max-width: 768px;
+  }
+}
 @media (min-width: 1440px) {
+  .page {
+    max-width: 1440px;
+  }
   .content {
     grid-template-columns: 420px 1fr;
     gap: 24px;

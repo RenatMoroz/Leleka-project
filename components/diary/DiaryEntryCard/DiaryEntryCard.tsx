@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import styles from './DiaryEntryCard.module.css';
 import type { DiaryNote } from '@/types/diary';
-import { emotionToEmoji } from '../diaryEmojis';
+import { Emotion } from '@/constants/emotions';
 
 type Props = {
   entry: DiaryNote;
@@ -26,7 +26,7 @@ export default function DiaryNoteCard({
   mode,
   onClick,
 }: Props) {
-  const emotions = entry.categories.slice(0, 3);
+  const emotions = entry.categories;
 
   const inner = (
     <article className={`${styles.card} ${isActive ? styles.active : ''}`}>
@@ -36,9 +36,9 @@ export default function DiaryNoteCard({
       </div>
 
       <div className={styles.emotions} aria-label="Емоції">
-        {emotions.map((e) => (
-          <span key={e} className={styles.emoji} title={e}>
-            {emotionToEmoji[e]}
+        {emotions.map((e, index) => (
+          <span key={index} className={styles.tag}>
+            {e.label}
           </span>
         ))}
       </div>
