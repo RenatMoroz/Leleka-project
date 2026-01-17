@@ -2,12 +2,13 @@
 
 import { useMemo, useState } from 'react';
 import styles from './DiaryList.module.css';
-import type { DiaryEntry } from '@/types/diary';
+import type { DiaryNote } from '@/types/diary';
 import DiaryEntryCard from '../DiaryEntryCard/DiaryEntryCard';
-// import AddDiaryEntryModal from "../AddDiaryEntryModal/AddDiaryEntryModal";
+import AddDiaryEntryModal from '@/components/diary.modal/AddDiaryEntryModal';
+import { useSelectedNoteStore } from '@/lib/store/selectedNoteStore';
 
 type Props = {
-  entries: DiaryEntry[];
+  entries: DiaryNote[];
   isLoading: boolean;
   isError: boolean;
   selectedId: string | null;
@@ -24,6 +25,9 @@ export default function DiaryList({
   mode,
 }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeNoteModal = () => setIsModalOpen(false);
+  const openNoteModal = () => setIsModalOpen(true);
+  const selectedNote = useSelectedNoteStore((s) => s.selectedNote);
 
   const content = useMemo(() => {
     if (isLoading) return <div className={styles.info}>Завантаження...</div>;
@@ -66,11 +70,17 @@ export default function DiaryList({
 
       <div className={styles.scrollArea}>{content}</div>
 
-      {/* <AddDiaryEntryModal
-        key={isModalOpen ? "open" : "closed"}
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      /> */}
+      {isModalOpen && (
+        <AddDiaryEntryModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            closeNoteModal();
+
+            useSelectedNoteStore.getState().setSelectedNote(null);
+          }}
+          note={selectedNote ?? undefined}
+        />
+      )}
     </section>
   );
 }

@@ -3,18 +3,16 @@ import type {
   DiaryNote,
   DiaryEntryCreateDto,
   DiaryEntryUpdateDto,
+  GetDiaryEntriesResponse,
 } from '@/types/diary';
 
 export async function getDiaryEntries(): Promise<DiaryNote[]> {
-  const { data } = await NextServer.get<DiaryNote[]>('/api/diaries');
-  console.log('lox', data);
+  const { data } = await NextServer.get<GetDiaryEntriesResponse>(
+    '/api/diaries'
+  );
+  console.log('lox', data.data);
 
-  return data;
-}
-
-export async function getDiaryNote(entryId: string): Promise<DiaryNote> {
-  const { data } = await NextServer.get<DiaryNote>(`/api/diaries/${entryId}`);
-  return data;
+  return data.data;
 }
 
 export async function createDiaryNote(

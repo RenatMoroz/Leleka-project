@@ -26,13 +26,13 @@ export default function DiaryNoteCard({
   mode,
   onClick,
 }: Props) {
-  const emotions = entry.emotions.slice(0, 3);
+  const emotions = entry.categories.slice(0, 3);
 
   const inner = (
     <article className={`${styles.card} ${isActive ? styles.active : ''}`}>
       <div className={styles.top}>
         <h4 className={styles.title}>{entry.title}</h4>
-        <time className={styles.date}>{formatDate(entry.createdAt)}</time>
+        <time className={styles.date}>{formatDate(entry.date)}</time>
       </div>
 
       <div className={styles.emotions} aria-label="Емоції">

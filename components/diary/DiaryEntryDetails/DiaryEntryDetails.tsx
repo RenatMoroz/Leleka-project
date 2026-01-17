@@ -2,17 +2,20 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import styles from './DiaryEntryDetails.module.css';
 
-import { deleteDiaryEntry, getDiaryEntry } from '@/lib/api/diaryApi';
-import type { DiaryEntry } from '@/types/diary';
+import { deleteDiaryNote } from '@/lib/api/diaryApi';
+import type { DiaryNote } from '@/types/diary';
 import { emotionToEmoji } from '../diaryEmojis';
+import AddDiaryEntryModal from '@/components/diary.modal/AddDiaryEntryModal';
+import { useSelectedNoteStore } from '@/lib/store/selectedNoteStore';
 
 type Props = {
-  entryId: string | null;
+  _id: string | null;
   emptyText?: string;
   showMobileBack?: boolean;
+  entry: DiaryNote;
 };
 
 function formatDate(iso: string) {
@@ -24,52 +27,32 @@ function formatDate(iso: string) {
 }
 
 export default function DiaryEntryDetails({
-  entryId,
+  _id,
   emptyText,
   showMobileBack,
+  entry,
 }: Props) {
   const qc = useQueryClient();
-  const [editOpen, setEditOpen] = useState(false);
-
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['diaryEntry', entryId],
-    queryFn: () => getDiaryEntry(String(entryId)),
-    enabled: Boolean(entryId),
-  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeNoteModal = () => setIsModalOpen(false);
+  const openNoteModal = (p0: boolean) => setIsModalOpen(true);
+  const selectedNote = useSelectedNoteStore((s) => s.selectedNote);
 
   const delMutation = useMutation({
-    mutationFn: (id: string) => deleteDiaryEntry(id),
+    mutationFn: (id: string) => deleteDiaryNote(id),
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: ['diaryEntries'] });
     },
   });
 
-  const entry = data as DiaryEntry | undefined;
+  const emotions = useMemo(() => entry?.categories ?? [], [entry?.categories]);
 
-  const emotions = useMemo(() => entry?.emotions ?? [], [entry?.emotions]);
-
-  if (!entryId) {
+  if (!_id) {
     return (
       <section className={styles.wrap}>
         <div className={styles.placeholder}>
           {emptyText ?? 'Наразі записи у щоденнику відстні'}
         </div>
-      </section>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <section className={styles.wrap}>
-        <div className={styles.placeholder}>Завантаження...</div>
-      </section>
-    );
-  }
-
-  if (isError || !entry) {
-    return (
-      <section className={styles.wrap}>
-        <div className={styles.placeholder}>Не вдалося завантажити запис</div>
       </section>
     );
   }
@@ -85,21 +68,32 @@ export default function DiaryEntryDetails({
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <h3 className={styles.title}>{entry.title}</h3>
-          <time className={styles.date}>{formatDate(entry.createdAt)}</time>
+          <time className={styles.date}>{formatDate(entry.date)}</time>
         </div>
 
         <div className={styles.actions}>
           <button
             type="button"
             className={styles.iconBtn}
-            onClick={() => setEditOpen(true)}
+            onClick={() => {
+              openNoteModal(true);
+              useSelectedNoteStore.getState().setSelectedNote(entry);
+            }}
           >
             Редагувати
           </button>
 
-          {/* ConfirmationModal робить інший розробник — щоб НЕ ламати збірку,
-              тут без імпорту. Коли модалка буде готова, підключити її тут.
-          */}
+          {isModalOpen && (
+            <AddDiaryEntryModal
+              isOpen={isModalOpen}
+              onClose={() => {
+                closeNoteModal();
+
+                useSelectedNoteStore.getState().setSelectedNote(null);
+              }}
+              note={selectedNote ?? undefined}
+            />
+          )}
           <button
             type="button"
             className={`${styles.iconBtn} ${styles.danger}`}
@@ -115,7 +109,7 @@ export default function DiaryEntryDetails({
       </div>
 
       <div className={styles.body}>
-        <p className={styles.text}>{entry.content}</p>
+        <p className={styles.text}>{entry.text}</p>
 
         {emotions.length > 0 && (
           <div className={styles.emotions}>

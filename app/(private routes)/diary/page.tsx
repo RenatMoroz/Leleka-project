@@ -49,7 +49,8 @@ export default function DiaryPage() {
         {isDesktop && (
           <div className={styles.detailsCol}>
             <DiaryEntryDetails
-              entryId={activeId}
+              _id={activeId}
+              entry={entries.find((e) => e._id === activeId)!}
               emptyText="Наразі записи у щоденнику відстні"
             />
           </div>

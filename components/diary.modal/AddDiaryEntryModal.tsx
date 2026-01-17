@@ -1,11 +1,9 @@
 'use client';
 
 import Modal from '@/components/Modal/modal';
-
+import { useRouter } from 'next/navigation';
 import AddDiaryEntryForm from './AddDiaryEntryForm';
-
 import type { DiaryNote } from '@/types/diary';
-
 import css from './AddDiaryEntryModal.module.css';
 
 interface AddDiaryEntryModalProps {
@@ -24,7 +22,7 @@ export default function AddDiaryEntryModal({
   note,
 }: AddDiaryEntryModalProps) {
   const title = note ? 'Редагувати запис' : 'Новий запис';
-
+  const router = useRouter();
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className={css.container}>
@@ -33,7 +31,9 @@ export default function AddDiaryEntryModal({
 
           <button
             className={css.closeButton}
-            onClick={onClose}
+            onClick={() => {
+              onClose();
+            }}
             aria-label="Close"
           >
             &times;
