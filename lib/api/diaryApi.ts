@@ -1,4 +1,4 @@
-import clientApi from "./clientApi";
+import { NextServer } from "@/lib/api/api";
 import type {
   DiaryEntry,
   DiaryEntryCreateDto,
@@ -6,33 +6,33 @@ import type {
 } from "@/types/diary";
 
 export async function getDiaryEntries(): Promise<DiaryEntry[]> {
-  const { data } = await clientApi.get<DiaryEntry[]>("/diaries");
+  const { data } = await NextServer.get<DiaryEntry[]>("/diaries");
   return data;
 }
 
 export async function getDiaryEntry(entryId: string): Promise<DiaryEntry> {
-  const { data } = await clientApi.get<DiaryEntry>(`/diaries/${entryId}`);
+  const { data } = await NextServer.get<DiaryEntry>(`/diaries/${entryId}`);
   return data;
 }
 
 export async function createDiaryEntry(
-  payload: DiaryEntryCreateDto
+  payload: DiaryEntryCreateDto,
 ): Promise<DiaryEntry> {
-  const { data } = await clientApi.post<DiaryEntry>("/diaries", payload);
+  const { data } = await NextServer.post<DiaryEntry>("/diaries", payload);
   return data;
 }
 
 export async function updateDiaryEntry(
   entryId: string,
-  payload: DiaryEntryUpdateDto
+  payload: DiaryEntryUpdateDto,
 ): Promise<DiaryEntry> {
-  const { data } = await clientApi.patch<DiaryEntry>(
+  const { data } = await NextServer.patch<DiaryEntry>(
     `/diaries/${entryId}`,
-    payload
+    payload,
   );
   return data;
 }
 
 export async function deleteDiaryEntry(entryId: string): Promise<void> {
-  await clientApi.delete(`/diaries/${entryId}`);
+  await NextServer.delete(`/diaries/${entryId}`);
 }

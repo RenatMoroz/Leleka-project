@@ -67,6 +67,7 @@ export default function DiaryList({
       <div className={styles.scrollArea}>{content}</div>
 
       <AddDiaryEntryModal
+        key={isModalOpen ? "open" : "closed"}
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />

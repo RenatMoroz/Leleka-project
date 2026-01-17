@@ -99,7 +99,7 @@ export default function DiaryEntryDetails({
           </button>
 
           {/* ConfirmationModal робить інший розробник — щоб НЕ ламати збірку,
-              тут без імпорту. Коли модалка буде готова, підключите її тут.
+              тут без імпорту. Коли модалка буде готова, підключити її тут.
           */}
           <button
             type="button"
@@ -130,6 +130,7 @@ export default function DiaryEntryDetails({
       </div>
 
       <AddDiaryEntryModal
+        key={editOpen ? `edit-${entry.id}` : "closed"}
         open={editOpen}
         onClose={() => setEditOpen(false)}
         initialEntry={entry}
