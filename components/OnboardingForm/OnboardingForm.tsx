@@ -83,7 +83,7 @@ export const OnboardingForm: React.FC = () => {
           const fd = new FormData();
           fd.append('avatar', values.avatar);
           const { data } = await NextServer.patch<UploadAvatarResponse>(
-            '/api/users/avatar',
+            '/users/avatar',
             fd
           ); // НЕ став Content-Type вручну
         }
@@ -94,7 +94,7 @@ export const OnboardingForm: React.FC = () => {
             ? genderMap[values.gender as GenderKey]
             : undefined;
 
-        const { data } = await NextServer.patch<User>('/api/users/current', {
+        const { data } = await NextServer.patch<User>('/users/current', {
           ...(babyGender ? { babyGender } : {}),
           birthDate: values.deliveryDate
             ? values.deliveryDate.toISOString()
