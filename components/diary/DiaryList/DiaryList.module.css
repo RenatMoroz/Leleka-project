@@ -47,24 +47,28 @@
 }
 
 .addIcon {
-  width: 24px;
-  height: 24px;
+  width: 21px;
+  height: 21px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
-  background: #fff;
-  font-weight: 900;
 }
 
 .scrollArea {
   display: block;
 }
 
-/* Desktop: внутрішній скрол у фіксованому блоці */
+@media (min-width: 768px) {
+  .wrap {
+    padding: 24px 16px;
+  }
+}
 @media (min-width: 1440px) {
+  .wrap {
+    width: 387px;
+  }
   .scrollArea {
-    height: calc(640px - 16px - 16px - 44px); /* загальна - паддінги - хедер */
+    height: calc(640px - 16px - 16px - 44px);
     overflow-y: auto;
     padding-right: 6px;
   }
@@ -76,7 +80,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 }
 
 .item {

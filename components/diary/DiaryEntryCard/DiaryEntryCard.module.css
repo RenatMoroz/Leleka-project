@@ -38,7 +38,7 @@
 .title {
   margin: 0;
   font-family: var(--font-family);
-  font-weight: 600;
+  font-weight: 500;
   font-size: 16px;
   line-height: 26px;
   color: var(--color-scheme-text);
@@ -53,27 +53,21 @@
   flex: 0 0 auto;
 }
 
-/* .emotions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-} */
-
 .emotions {
   display: flex;
-  flex-wrap: wrap; /* Щоб теги переносилися на новий рядок */
-  gap: 8px; /* Відступ між тегами */
+  flex-wrap: wrap;
+  gap: 8px;
   margin-top: 4px;
 }
 
-/* Стиль самого тега (бабла) */
 .tag {
-  background-color: #ffffff; /* Білий фон */
+  background: var(--color-scheme-foreground);
   padding: 4px 12px;
-  border-radius: 100px; /* Закруглені краї */
+  border-radius: 100px;
   font-size: 12px;
-  color: #4a4a4a;
-  border: 1px solid #f0f0f0; /* Легка рамка */
+  color: var(--color-scheme-text);
+  border: 1px solid var(--opacity-transparent);
+
   white-space: nowrap;
 }
 
@@ -87,4 +81,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .card {
+    width: 690px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .card {
+    width: 345px;
+  }
 }
