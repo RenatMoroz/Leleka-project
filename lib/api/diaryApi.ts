@@ -8,7 +8,7 @@ import type {
 
 export async function getDiaryEntries(): Promise<DiaryNote[]> {
   const { data } = await NextServer.get<GetDiaryEntriesResponse>(
-    '/api/diaries'
+    '/diaries'
   );
   console.log('lox', data.data);
 
@@ -18,7 +18,7 @@ export async function getDiaryEntries(): Promise<DiaryNote[]> {
 export async function createDiaryNote(
   payload: DiaryEntryCreateDto
 ): Promise<DiaryNote> {
-  const { data } = await NextServer.post<DiaryNote>('/api/diaries', payload);
+  const { data } = await NextServer.post<DiaryNote>('/diaries', payload);
   return data;
 }
 
@@ -27,12 +27,12 @@ export async function updateDiaryNote(
   payload: DiaryEntryUpdateDto
 ): Promise<DiaryNote> {
   const { data } = await NextServer.patch<DiaryNote>(
-    `/api/diaries/${entryId}`,
+    `/diaries/${entryId}`,
     payload
   );
   return data;
 }
 
 export async function deleteDiaryNote(entryId: string): Promise<void> {
-  await NextServer.delete(`/api/diaries/${entryId}`);
+  await NextServer.delete(`/diaries/${entryId}`);
 }
