@@ -102,10 +102,7 @@ export default function TaskReminderCard() {
                   <input
                     type="checkbox"
                     checked={t.isDone}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      toggleStatusMutation.mutate(t);
-                    }}
+                    onChange={() => toggleStatusMutation.mutate(t)}
                   />
                 </label>
 
