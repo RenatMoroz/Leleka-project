@@ -1,4 +1,4 @@
-# 🎬 Leleka Project
+# 🕊️👶 Leleka Project
 
 Our team developed a Ukrainian web application for pregnant women, designed to track pregnancy progress, baby development, and personal notes.
 
